@@ -47,7 +47,7 @@ def make_gender_pay_gap_plot():
     data = pd.read_csv("./DAMI2-PlotData/GenderPayGap_2015OECD.csv", delimiter=',', header=0)
     data.set_index(['LOCATION'], inplace=True)
     data.sort_values(['Value'], ascending=[0], inplace=True)
-    plt.barh(data.index, data.Value, 0.7, label="PayGap")
+    plt.barh(data.index, data.Value, 0.7)
     plt.title('Gender wage gap by country')
     plt.xlabel('Gender wage gap')
     plt.ylabel('Country')
