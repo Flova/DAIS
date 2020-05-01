@@ -5,40 +5,34 @@ import matplotlib.pyplot as plt
 data = genfromtxt('scores.csv', delimiter=',')
 
 #Extract the data needed to perform a regression
-x = array(data[:,0])
-y = array(data[:,1])
-
-#Plot the data for a first impression
-plt.figure(1)
-plt.scatter(x,y)
-plt.xlabel('Hours of study')
-plt.ylabel('Test scores')
-plt.show()
-
-
+x, y = np.hsplit(data, 2)
 
 def estimate_coef(x, y): 
 	# number of observations/points 
 	n = np.size(x) 
 
-	# HERE: Get the mean of x and y vector (hint: use built-in functions)
-	
+	# Get the mean of x and y vector (hint: use built-in functions)
+	m_x = x.mean()
+	m_y = y.mean()
 
 	# calculating cross-deviation and deviation about x 
 	SS_xy = np.sum(y*x) - n*m_y*m_x 
 	SS_xx = np.sum(x*x) - n*m_x*m_x 
 
-	# HERE: Calculate the regression coefficients 
-	beta_1 = 
-	beta_0 = 
+	# Calculate the regression coefficients 
+	beta_1 = SS_xy / SS_xx
+	beta_0 = m_y - beta_1 * m_x
 	
-	return(beta_0, beta_1) 
+	return (beta_0, beta_1) 
 
 def plot_regression_line(x, y, b): 
-	# HERE: plot the actual points as scatter plot 
+	# plot the actual points as scatter plot 
+	plt.scatter(x,y)
+	plt.xlabel('Hours of study')
+	plt.ylabel('Test scores')
 
-	# HERE: compute the predicted response vector 
-	y_pred = 
+	# compute the predicted response vector 
+	y_pred = x * b[1] + b[0]
 
 	# plotting the regression line 
 	plt.plot(x, y_pred, color = "k") 
@@ -55,10 +49,9 @@ def main():
 
 	# estimating coefficients 
 	b = estimate_coef(x, y) 
-	print('The estimated coefficients are', repr(b[0]), 'and', repr(b[1]))
+	print(f'The estimated coefficients are {repr(b[0])} and {repr(b[1])}')
 
 	# plotting regression line 
-	plt.figure(2)
 	plot_regression_line(x, y, b) 
 	
 if __name__ == "__main__": 
