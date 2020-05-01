@@ -55,4 +55,7 @@ def make_gender_pay_gap_plot():
 
 
 if __name__ == "__main__":
+    make_grades_plot()
+    make_musik_plot()
+    make_brexit_plot()
     make_gender_pay_gap_plot()
