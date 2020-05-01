@@ -25,6 +25,9 @@ def estimate_coef(x, y):
 	
 	return (beta_0, beta_1) 
 
+def estimate_error(x, y, b):
+	return np.sum(np.square(y - (b[0] + b[1] * x)))
+
 def plot_regression_line(x, y, b): 
 	# plot the actual points as scatter plot 
 	plt.scatter(x,y)
@@ -51,6 +54,8 @@ def main():
 	b = estimate_coef(x, y) 
 	print(f'The estimated coefficients are {repr(b[0])} and {repr(b[1])}')
 
+	error = estimate_error(x, y, b)
+	print(f'Residual error: {repr(error)}')
 	# plotting regression line 
 	plot_regression_line(x, y, b) 
 	
