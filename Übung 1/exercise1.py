@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 
+
 def make_grades_plot():
     lecture1 = np.loadtxt("./DAMI2-PlotData/Grades_lecture1.dat")
     lecture2 = np.loadtxt("./DAMI2-PlotData/Grades_lecture2.dat")
@@ -29,11 +30,12 @@ def make_musik_plot():
 
 def make_airline_plot():
     data = pd.read_csv("./DAMI2-PlotData/AirlineSafety.csv", delimiter=',')   # TODO
+    print(data.fatalities_85_99.mean())
     print(data)
     
 def make_brexit_plot():
     data = pd.read_csv("./DAMI2-PlotData/Economist_Brexit.csv", delimiter=',', names=['dates', 'pro', 'contra'], header=0)
-    data.dates = pd.to_datetime(data['dates'], format='%d/%m/%y')
+    data.dates = pd.to_datetime(data.dates, format='%d/%m/%y')
     data.set_index(['dates'], inplace=True)
     plt.plot(data.index, data.pro, label=data.pro.name)
     plt.plot(data.index, data.contra, label=data.contra.name)
@@ -57,5 +59,6 @@ def make_gender_pay_gap_plot():
 if __name__ == "__main__":
     make_grades_plot()
     make_musik_plot()
+    make_airline_plot()
     make_brexit_plot()
     make_gender_pay_gap_plot()
