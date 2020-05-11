@@ -30,12 +30,12 @@ def make_musik_plot():
 
 def make_airline_plot():
     data = pd.read_csv("./DAMI2-PlotData/AirlineSafety.csv", delimiter=',')   # TODO
-    mio_seat_kilometers_per_week = (data.avail_seat_km_per_week/10000000)
+    mio_seat_kilometers_per_week = (data.avail_seat_km_per_week*52*15) / 10**10  # Scale time to 15 years and scale to 10 billion seat km
     corrected_fat_85_99 = data.fatalities_85_99 / mio_seat_kilometers_per_week
     corrected_fat_00_14 = data.fatalities_00_14 / mio_seat_kilometers_per_week
     plt.boxplot([corrected_fat_85_99, corrected_fat_00_14], labels=["1985 - 1999", "2000 - 2014"])
     plt.title('Destribution of airline safety through the ages')
-    plt.ylabel('Fatalities per 10 Mio. Seat Kilometer')
+    plt.ylabel('Fatalities per 10 Billion Seat Kilometer')
     plt.show()
     
 def make_brexit_plot():
