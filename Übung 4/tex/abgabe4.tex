@@ -6,18 +6,227 @@
 \usepackage{fancyhdr}       %sch\"one Kopf- und Fußzeilen
 \usepackage{verbatim}
 \usepackage{graphicx}
+\usepackage{pgfplotstable}
+\usepackage{booktabs} % required for using tables
+\usepackage{float}
 
 \pagestyle{fancy}
 \lhead{Data-driven intelegent systems\\}
-\chead{\ \\Florian Vahl}
+\chead{\ \\Florian Vahl, Dominik Buchhardt}
 \rhead{\today\\}
 
 \parindent0pt
 
+\pgfplotstableset{% global config, for example in the preamble
+  every head row/.style={before row=\toprule, after row=\midrule},
+  every last row/.style={after row=\bottomrule},
+  fixed,precision=3,
+}
+
 \begin{document}
 \section{Wine}
+Python 3.8 and sklearn 0.23.1 was used for this part of the exercise.\\
+\subsection{Decision Tree}
+\subsubsection{Naive Comparison of Gini and Entropy}
+The initial Decision Tree Model, where all default parameters were used, with \textit{test\_size=0.1} and \textit{random\_state=42} yielded the following result:
 
+\begin{figure}[H]
+\centering
+\pgfplotstabletypeset[
+	string type,
+	col sep=&,
+	row sep=\\,
+]{
+Class&Precision&Recall&f1-Score\\
+class\_0&1.00&0.86&0.92\\
+class\_1&0.78&1.00&0.88\\
+class\_2&1.00&0.75&0.86\\
+}
+\caption{Classification report for the initial Decision Tree with an Accuracy of 89\%}
+\end{figure}
 
+Using the parameter \textit{criterion="entropy"} instead of the default "gini" for the DecisionTreeClassifier yields the following results:
+
+\begin{figure}[H]
+\centering
+\pgfplotstabletypeset[
+	string type,
+	col sep=&,
+	row sep=\\,
+]{
+Class&Precision&Recall&f1-Score\\
+class\_0&0.88&1.00&0.93\\
+class\_1&0.78&1.00&0.88\\
+class\_2&1.00&0.25&0.40\\
+}
+\caption{Classification report for an Decision Tree with the Criterion "entroy" and an Accuracy of 83\%}
+\end{figure}
+
+This specific tree suffers in overall accuracy when using the "entropy" criterion instead of "gini" for splitting, as the accuracy drops in 6%.
+That does not lead to the conclusion that the "gini" criterion is overall better than "entropy" as they may lead to different best performances when using different parameters not only on the DecisionTreeClassifier but also maybe on the way the test data is generated.
+
+\subsubsection{Varying the Test Sizes}
+
+The following Experiments measured the Accuracies for \textit{criterion="gini"} and \textit{criterion="entropy"} respectively for an increasing test data size.
+
+\begin{figure}[H]
+\centering
+\pgfplotstabletypeset[
+	string type,
+	col sep=&,
+	row sep=\\,
+]{
+Test Size&Accuracy for Gini&Accuracy for Entropy\\
+0.1&0.89&0.83\\
+0.2&0.94&0.91\\
+0.3&0.96&0.85\\
+0.4&0.93&0.83\\
+}
+\caption{Accuracies for different Information Gain criteria and increasing test sizes}
+\end{figure}
+
+Using different training sizes do lead to different Accuracies as one would expect. While the "entropy" criterion does perform worse than the "gini" criterion with the same test sizes it also does have a different "optimum" for test size, around 20\% for this dataset, where the accuracy its at its maximum, while "gini" has its maximum at around 30\% test size.
+
+\subsubsection{Crossvalidation}
+
+Integrating the given snippet for cross validation with the DecisionTreeClassifier and using 10-fold Cross Validation with an "accuracy" scoring algorithm leads to an accuracy of $ 86.5\% \pm 9.135 $.
+This mean is lower than the accuracy of a manually splitted dataset, but the deviation is very broad and could include the previous manually found optimum for test size.
+
+\begin{figure}[H]
+\centering
+\pgfplotstabletypeset[
+	string type,
+	col sep=&,
+	row sep=\\,
+]{
+Iteration&Accuracy\\
+0&0.88888889\\
+1&0.88888889\\
+2&0.66666667\\
+3&0.88888889\\
+4&0.83333333\\
+5&0.83333333\\
+6&0.94444444\\
+7&0.94117647\\
+8&0.76470588\\
+}
+\caption{Accuracies for different Split Iterations of this 10-fold Crossvalidation}
+\end{figure}
+
+\subsubsection{Grid Search}
+
+The following the Experiment searches for the best Hyperparameter for \textit{criterion} and \textit{random\_state} for a DecisionTreeClassifier using a GridSearch and 10-fold Crossvalidation.
+For the following Gridsearch a range of 0-49 (inclusive) is used for the random\_state parameter and "gini" or "entropy" for criterion.
+
+Unexpectedly it found the best Accuracy of 92\% for the Hyperparameter \textit{criterion="entropy"} and \textit{random\_state=2}.
+
+Using Gridsearch for only random\_state and the default "gini" criterion yields an Accuracy of 88\% for a random\_state of 21.
+
+The unexpected results could be explained by the fact that Gridsearch of sklearn uses crossvalidation, which may lead to underperformance with the "gini" criterion.
+
+This experiment is not really useful, as the random\_state is used for splitting the data into training and test set and functions as a random seed for selecting the data.
+
+\subsection{MLP}
+\subsubsection{Comparing "adam" against "sgd"}
+
+The following experiments compares the Accuracy of the MLP-Network with two hidden layers each having 10 hidden nodes and a maximum iteration of 10 for the solvers "adam" and "sgd".
+
+\begin{figure}[H]
+\centering
+\pgfplotstabletypeset[
+	string type,
+	col sep=&,
+	row sep=\\,
+]{
+Class&Precision&Recall&f1-Score\\
+class\_0&0.00&0.00&0.00\\
+class\_1&0.50&0.43&0.46\\
+class\_2&0.33&1.00&0.50\\
+}
+\caption{Classification report for an MLP with the Solver "Adam" having an Accuracy of 38\%}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\pgfplotstabletypeset[
+	string type,
+	col sep=&,
+	row sep=\\,
+]{
+Class&Precision&Recall&f1-Score\\
+class\_0&0.00&0.00&0.00\\
+class\_1&0.00&0.00&0.00\\
+class\_2&0.24&1.00&0.38\\
+}
+\caption{Classification report for an MLP with the Solver "sgd" having an Accuracy of 22\%}
+\end{figure}
+
+Looking only at the Accuracy one can see that "Adam" outperforms "sgd" by a large margin for this dataset and the given parameters. "sgd" classified only some of class\_2 correctly while not correctly classifying any of class\_0 or class\_1 while "Adam" missing the true positives for class\_0 only.
+None of the MLP in this experiments did converge.
+
+\subsubsection{Variying the Test size}
+The following Experiments measured the Accuracies for \textit{solver="Adam"} for an increasing test data size. A MLPClassifier with two hidden layers each having 10 hidden nodes is used.
+
+\begin{figure}[H]
+\centering
+\pgfplotstabletypeset[
+	string type,
+	col sep=&,
+	row sep=\\,
+]{
+Test Size&Accuracy\\
+0.1&0.38\\
+0.2&0.38\\
+0.3&0.25\\
+0.4&0.36\\
+0.5&0.38\\
+0.6&0.43\\
+0.7&0.49\\
+0.8&0.41\\
+0.9&0.26\\
+0.99&0.39\\
+}
+\caption{Accuracies for a MLP with increasing test sizes}
+\end{figure}
+
+Increasing the test size does seem to have an effect for this particular classifier, but as the nature of MLP is that the weights are initialized at random, the accuracies for the same parameters do fluctuate very strong, sometimes $\pm 20\%$. For the experiments I used the first computed values only. As the accuracy do fluctuate very much one cannot make any valid assumptions what influence the test set has on the accuracy, based on this data.
+None of the MLP in this experiments did converge.
+
+\subsubsection{Crossvalidation}
+
+Integrating the given snippet for cross validation with the MLPClassifier and using 10-fold Cross Validation with an "accuracy" scoring algorithm leads to an accuracy of $ 34.2\% \pm 10.067 $.
+This mean is lower than the accuracy of a manually splitted dataset, but the deviation is very broad and could include the previous manually found optimum for test size.
+None of the MLP in this experiments did converge.
+
+\begin{figure}[H]
+\centering
+\pgfplotstabletypeset[
+	string type,
+	col sep=&,
+	row sep=\\,
+]{
+Iteration&Accuracy\\
+0&0.33333333\\
+1&0.27777778\\
+2&0.33333333\\
+3&0.27777778\\
+4&0.27777778\\
+5&0.33333333\\
+6&0.33333333\\
+7&0.61111111\\
+8&0.0.41176471\\
+9&0.23529412\\
+}
+\caption{Accuracies for different Split Iterations of this 10-fold Crossvalidation}
+\end{figure}
+
+\subsubsection{Grid Search}
+
+The following the Experiment searches for the best Hyperparameter for \textit{max\_iter} for a MLPClassifier using a GridSearch and 10-fold Crossvalidation.
+For the following Gridsearch a range of 10-910 (inclusive, 100er steps) is used for the max\_iter parameter.
+
+It found the best Accuracy of 57\% for the Hyperparameter \textit{max\_iter=410}.
+None of the MLP in this experiments did converge.
 
 \section{MNIST}
 \subsection{MLP}
