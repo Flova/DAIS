@@ -24,12 +24,16 @@
 }
 
 \begin{document}
+
 \section{The k-means algorithm}
+
 In the Initialization Phase, k random Points are generated, which represent the Centroids of the Clusters. In \textit{digit\_KMEANS.ipynb} the k is set to 10, the number of digits in base 10.\\
 In the following Learning Phase the Data Points are assigned to the closest Centroid, the Centroids are reassigned to the means of their cluster. This Learning Phase repeats itself as long the Centroids still move (or in practice do not move more than a certain threshold as floating point numbers have limited accuracy on machines).
 The KMeans does not only find clusters, but the locally optimal cluster by minimizing the distance of each data point in a cluster to its centroid.\\
 This Cluster Model can be used to assign new data points to the clusters. The \textit{digit\_KMEANS.ipynb} example assigns a digit image to the corresponding cluster which each represent a digit in base 10, thus 'recognizing' an image as a certain digit.
+
 \section{What is the best k?}
+
 The selection of k, meaning the number of classes the data is split into, is a critical and not trivial point while using k-means.
 The \textit{bestK.ipynb} file generates plots for the \textit{sum of squared distances} and the \textit{silhouette coefficient} for each number of clusters k between $2$ and $15$.
 
@@ -38,15 +42,17 @@ This sum decreases if the data points are closer to their cluster centers.
 In the extreme case of $k = number data points$ this distance is zero.
 This is obviously not the k we want, therefore looking at the rate of which the \textit{sum of squared distances} decreases seems like a better indicator.
 A big leap downwards can be observed at $k = 3$.
-The changes afterwards are very small and the clusters seem to over-fit..
+The changes afterwards are very small and the clusters seem to over-fit.
 
 The other metric is the \textit{silhouette coefficient}.
-It is value which is used to measure the quality of clustering regardless of the cluster count.
+It is a value that is used to measure the quality of clustering regardless of the cluster count.
 A higher value is better.
 The peak of this plot was also at $k=3$.
 
 Therefore $k=3$ seems to be the best option for this dataset.
+
 \section{Clustering comparisons}
+
 The K-Means algorithm creates two clusters on the nested circles with each cluster having half of each circle and their centroids being diametrically opposed on the inner circle. This result is not surprising as the K-Means algorithm finds clusters as the closest data points to a centroid, making the clusters circular and suitable for complex and possible nested clusters.\\
 This behaviour can be also observed on the dataset with interlocked half moons, where each cluster claim part of the other half moon, creating incorrect categorizations. The Centroids are not on the half moons itself but on the hollow space of the moons.\\
 In contrast to K-Means, the Agglomerative Clustering with single linkage (closest distance between two clusters) classifies the half moons correctly. This is not surprising as there is some empty space between each half moon, making the merging of clusters until two are left easy.\\
@@ -54,7 +60,9 @@ The Agglomerative Clustering with average (minimal average distance between two 
 The DBScan algorithm yields for the half moon data set a perfect result, categorizing each half moon as its own cluster and when using more noise, classifying possible noise as noise.\\
 In conclusion K-Means is more suited for classifying clusters with circular shapes, as circles have the minimal distance from their edges to their centers, making it unsuitable for datasets with non-circular/complex and possible nested clusters. Agglomerative Clustering merges clusters in a bottom-up approach in respect to certain distance criteria (like single, average or complete distance) between two clusters until a certain number of clusters are left. Using single linkage yields a result similar to using the DBScan algorithm for this dataset.
 DbScan uses a density-based approach of clustering, categorizing data points as core points, density-reachable from a core point and outliers, performing good with datasets with dense shapes/clusters even if they are complex. While DBscans performs better on these datasets, it's usage is more complex in \textit{sklearn} than K-Means or Agglomerative Clustering, as the density needs to be set carefully to produce a satisfying result.
+
 \section{Self Organizing Maps}
+
 \begin{itemize}
   \item What is the initialization procedure?
 
