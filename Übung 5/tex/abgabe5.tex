@@ -30,6 +30,22 @@ In the following Learning Phase the Data Points are assigned to the closest Cent
 The KMeans does not only find clusters, but the locally optimal cluster by minimizing the distance of each data point in a cluster to its centroid.\\
 This Cluster Model can be used to assign new data points to the clusters. The \textit{digit\_KMEANS.ipynb} example assigns a digit image to the corresponding cluster which each represent a digit in base 10, thus 'recognizing' an image as a certain digit.
 \section{What is the best k?}
+The selection of k, meaning the number of classes the data is split into, is a critical and not trivial point while using k-means.
+The \textit{bestK.ipynb} file generates plots for the \textit{sum of squared distances} and the \textit{silhouette coefficient} for each number of clusters k between $2$ and $15$.
+
+The \textit{sum of squared distances} describes the sum of the square of the distance from clusters centroid to the data point for each data point.
+This sum decreases if the data points are closer to their cluster centers.
+In the extreme case of $k = number data points$ this distance is zero.
+This is obviously not the k we want, therefore looking at the rate of which the \textit{sum of squared distances} decreases seems like a better indicator.
+A big leap downwards can be observed at $k = 3$.
+The changes afterwards are very small and the clusters seem to over-fit..
+
+The other metric is the \textit{silhouette coefficient}.
+It is value which is used to measure the quality of clustering regardless of the cluster count.
+A higher value is better.
+The peak of this plot was also at $k=3$.
+
+Therefore $k=3$ seems to be the best option for this dataset.
 \section{Clustering comparisons}
 The K-Means algorithm creates two clusters on the nested circles with each cluster having half of each circle and their centroids being diametrically opposed on the inner circle. This result is not surprising as the K-Means algorithm finds clusters as the closest data points to a centroid, making the clusters circular and suitable for complex and possible nested clusters.\\
 This behaviour can be also observed on the dataset with interlocked half moons, where each cluster claim part of the other half moon, creating incorrect categorizations. The Centroids are not on the half moons itself but on the hollow space of the moons.\\
