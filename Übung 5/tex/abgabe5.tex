@@ -55,4 +55,39 @@ The DBScan algorithm yields for the half moon data set a perfect result, categor
 In conclusion K-Means is more suited for classifying clusters with circular shapes, as circles have the minimal distance from their edges to their centers, making it unsuitable for datasets with non-circular/complex and possible nested clusters. Agglomerative Clustering merges clusters in a bottom-up approach in respect to certain distance criteria (like single, average or complete distance) between two clusters until a certain number of clusters are left. Using single linkage yields a result similar to using the DBScan algorithm for this dataset.
 DbScan uses a density-based approach of clustering, categorizing data points as core points, density-reachable from a core point and outliers, performing good with datasets with dense shapes/clusters even if they are complex. While DBscans performs better on these datasets, it's usage is more complex in \textit{sklearn} than K-Means or Agglomerative Clustering, as the density needs to be set carefully to produce a satisfying result.
 \section{Self Organizing Maps}
+\begin{itemize}
+  \item What is the initialization procedure?
+
+    The shape and size of the map are determined.
+
+    The weights of each neuron are initialized randomly.
+
+  \item How does the algorithm determine the best matching unit (BMU).
+
+    The algorithm picks the best matching by comparing the distance between the input vector and the weight vector for each neuron and picking the neuron with the lowest distance.
+    This distance is often calculated as a cartesian distance between the two.
+    A "the winner takes it all" strategy is the reason why only one best matching unit is picked.
+
+  \item What is the role of the neighborhood function?
+
+    The neighborhood function describes topological relations between the neurons in the output space.
+    If the weight of a neuron is changed (it is moved towards a specific input) other neurons that are close as described by the neighborhood function are influenced by this movement too.
+    They are also moved in the same direction.
+    This effect decreases over distance.
+    Often a Gaussian function is used to model this behavior.
+
+  \item What is the role of the learning rate?
+
+    The learning rate describes how much the neurons in the neighborhood of the BMU are influenced.
+    A high learning rate moves neurons that are further away and also moves the close ones by a larger amount.
+
+    If the learning rate is too small the system can get stuck in local minima or be entangled.
+    On the other hand, a large learning rate results in less accurate matches.
+
+    The learning rate needs to be decreased while training to achieve a good macroscopic structure using a high learning rate and a small one for the fine-tuning.
+
+  \item When does the algorithm stop (termination criterion)?
+
+    The algorithm can be terminated after a certain number of iterations.
+\end{itemize}
 \end{document}
