@@ -1,0 +1,51 @@
+\documentclass[a4paper, 11pt]{article}
+
+\usepackage{amsmath, amssymb, amstext, amsfonts, mathrsfs}  % Mathe
+\usepackage{hyperref}       %Anklicken von Links
+\usepackage[normalem]{ulem} %weitere Formatierung von Schriften
+\usepackage{fancyhdr}       %sch\"one Kopf- und Fußzeilen
+\usepackage{verbatim}
+\usepackage{graphicx}
+\usepackage{pgfplotstable}
+\usepackage{booktabs} % required for using tables
+\usepackage{float}
+
+\pagestyle{fancy}
+\lhead{Data-driven intelligent systems\\}
+\chead{\ \\Florian Vahl, Dominik Buchhardt}
+\rhead{\today\\}
+
+\parindent0pt
+
+\pgfplotstableset{% global config, for example in the preamble
+  every head row/.style={before row=\toprule, after row=\midrule},
+  every last row/.style={after row=\bottomrule},
+  fixed,precision=3,
+}
+
+\begin{document}
+
+\section{Markov Decision Process}
+\subsection{Description}
+The Markov decision process is a process where the action of an agent only depends on the current state of the environment.
+There are is a set of possible actions and a set of possible states. There is also an agent policy which choses an action based on the given state.
+The agent receives information about the state, performs the action provided by its policy and may receives a reward for the action. The state is updated and executed another time.
+The MPD has fixed transition probabilities which depend as said only on the current state.
+The reward probability is also fixed.
+
+The agents policy will be adapted to gain a maximum Return meaning a maximum future reward.
+The reward is estimated by estimating the Return for the next step and adding the reward for the transition.
+
+The best estimates for this transition are stored as $V$ values depending on the state or $Q$ depending on both the state and the action.
+
+\subsection{Example for a MDP}
+
+A robot navigates through a maze, the states are the positions and orientations of the robot.
+The actions are the movement commands. The reward is given based on the proximity to the goal position.
+
+
+\subsection{Example for a POMPD}
+
+A real life application where the robot from above is only able to measure a few of the values which are defining its state.
+Therefore it is only able to approximate a distribution of possible states and apply a more general form of the MDP.
+\end{document}
