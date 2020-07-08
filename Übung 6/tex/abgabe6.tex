@@ -48,4 +48,16 @@ The actions are the movement commands. The reward is given based on the proximit
 
 A real life application where the robot from above is only able to measure a few of the values which are defining its state.
 Therefore it is only able to approximate a distribution of possible states and apply a more general form of the MDP.
+
+\section{Exploration vs. exploitation}
+
+In reinforcement learning exists a tradeoff between exploration and exploitation.
+Exploitation means optimizing the currently best working policy towards a local maximum.
+Exploration on the other hand means trying out new or worse strategies to explore unknown states and skip local maxima in the best case towards a global maximum.
+\\\\
+This tradeoff can be implemented using a $\epsilon$-greedy action selection, where a random action is chosen with a probability of $1-\epsilon$ for exploration purposes.
+If no random action is selected the currently best fitting action is chosen.
+\\\\
+An agent may be failing or take a very long time to converge if it explores too much.
+On the other hand, exploiting too much results in a local maximum of the reward, meaning it maybe fails to choose an action that is suboptimal at the moment but leads to a much higher reward later on.
 \end{document}
